@@ -1,33 +1,20 @@
 package com.springbootacademy.pos_system.dto;
 
-import jakarta.persistence.Column;
-
 public class CustomerDto {
 
-    private int customerId;
-
+    private Integer customerId; // ✅ FIXED
 
     private String customerName;
-
-
     private String customerAddress;
-
     private double customerSalary;
-
-
     private String contactNumber;
-
-
     private String nic;
-
-
     private boolean active;
 
-    public CustomerDto(){
+    public CustomerDto() {}
 
-    }
-
-    public CustomerDto(int customerId, String customerName, String customerAddress, double customerSalary, String contactNumber, String nic, boolean active) {
+    public CustomerDto(Integer customerId, String customerName, String customerAddress,
+                       double customerSalary, String contactNumber, String nic, boolean active) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
@@ -37,11 +24,11 @@ public class CustomerDto {
         this.active = active;
     }
 
-    public int getCustomerId() {
+    public Integer getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
     }
 
@@ -91,18 +78,5 @@ public class CustomerDto {
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    @Override
-    public String toString() {
-        return "CustomerDto{" +
-                "customerId=" + customerId +
-                ", customerName='" + customerName + '\'' +
-                ", customerAddress='" + customerAddress + '\'' +
-                ", customerSalary=" + customerSalary +
-                ", contactNumber='" + contactNumber + '\'' +
-                ", nic='" + nic + '\'' +
-                ", active=" + active +
-                '}';
     }
 }
