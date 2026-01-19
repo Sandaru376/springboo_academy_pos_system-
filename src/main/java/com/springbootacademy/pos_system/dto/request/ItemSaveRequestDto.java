@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ItemSaveRequestDto {
 
+    private int itemId;
     private String itemName;
     private MeasuringUnitType measuringUnitType;
     private double balanceQty;
