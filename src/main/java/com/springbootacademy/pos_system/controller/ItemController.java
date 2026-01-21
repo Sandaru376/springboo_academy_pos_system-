@@ -1,11 +1,13 @@
 package com.springbootacademy.pos_system.controller;
 
-import com.springbootacademy.pos_system.dto.CustomerDto;
 import com.springbootacademy.pos_system.dto.request.ItemGetResponseDto;
 import com.springbootacademy.pos_system.dto.request.ItemSaveRequestDto;
-import com.springbootacademy.pos_system.entity.Item;
 import com.springbootacademy.pos_system.service.ItemService;
+
+import com.springbootacademy.pos_system.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +20,10 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    @PostMapping("/save")
-    public String saveItem(@RequestBody ItemSaveRequestDto dto) {
-        return itemService.saveItem(dto);
-    }
+   // @PostMapping("/save")
+    //       public String saveItem(@RequestBody ItemSaveRequestDto dto) {
+    //            return itemService.saveItem(dto);
+    //        }
 
 
 
@@ -48,5 +50,24 @@ public class ItemController {
     public String deleteItem(@PathVariable Integer id) {
         return itemService.deleteItem(id);
     }
+
+    @PostMapping("/save")
+    public ResponseEntity<StandardResponse> saveItem(@RequestBody ItemSaveRequestDto dto) {
+
+        String message = itemService.saveItem(dto);
+
+        StandardResponse response = new StandardResponse(
+                201,
+                "SUCCESS",
+                message
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+
+
+
+
 
 }

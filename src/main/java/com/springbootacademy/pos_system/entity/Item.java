@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "item")
@@ -28,4 +29,10 @@ public class Item {
     private double supplierPrice;
     private double sellingPrice;
     private boolean active;
+
+    @OneToMany(mappedBy = "items")
+    private Set<OrderDetails> orderDetails;
+
+
+
 }

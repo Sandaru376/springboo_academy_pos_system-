@@ -1,6 +1,7 @@
 package com.springbootacademy.pos_system.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -28,6 +29,9 @@ public class Customer {
 
     @Column(name = "active_state")
     private boolean active;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Set<Oder> oders;
 
     public Customer() {}
 

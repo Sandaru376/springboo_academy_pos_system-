@@ -1,5 +1,10 @@
 package com.springbootacademy.pos_system.controller;
+import com.springbootacademy.pos_system.util.StandardResponse;
 
+
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 import com.springbootacademy.pos_system.dto.CustomerDto;
 import com.springbootacademy.pos_system.service.CustomerService;
@@ -24,10 +29,21 @@ public class CustomerController {
         return customerService.updateCustomer(customerDto);
     }
 
-    @GetMapping("/get_all")
-    public List<CustomerDto> getAllCustomers() {
-        return customerService.getAllCustomers();
+    @GetMapping("/get-all")
+    public ResponseEntity<StandardResponse> getAllCustomers() {
+
+        List<CustomerDto> customers = customerService.getAllCustomers();
+
+        StandardResponse response = new StandardResponse(
+                200,
+                "SUCCESS",
+                customers
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
 
     @DeleteMapping("/delete/{id}")
     public String deleteCustomer(@PathVariable Integer id) {
