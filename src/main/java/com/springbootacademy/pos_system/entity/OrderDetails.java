@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "order_details") // avoid "-" (hyphen) in table names
+@Table(name = "order_details")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,23 +15,18 @@ public class OrderDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "oder_details_id")
-    private int oderDetailsId;
+    @Column(name = "order_detail_id")
+    private int id;
 
-    @Column(name = "item_name", nullable = false)
     private String itemName;
-
-    @Column(name = "qty", nullable = false)
     private double qty;
-
-    @Column(name = "amount", nullable = false)
     private double amount;
 
     @ManyToOne
-    @JoinColumn(name = "oder_id", nullable = false)
-    private Oder oders;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "item_id")
     private Item items;
 }

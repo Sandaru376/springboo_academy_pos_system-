@@ -1,30 +1,18 @@
-package com.springbootacademy.pos_system.dto.request;
+package com.springbootacademy.pos_system.dto;
+
+import com.springbootacademy.pos_system.dto.ResponseOrderDetailsDto;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class RequestOrderDetails {
-
-
+public class ResponseOrderDetailsDto {
 
     private String itemName;
-
-
     private double qty;
-
-
     private double amount;
-
-
-    private int oders;
-
-
-    private int items;
 }

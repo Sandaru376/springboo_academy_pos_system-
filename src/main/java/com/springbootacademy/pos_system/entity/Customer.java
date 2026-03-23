@@ -31,7 +31,7 @@ public class Customer {
     private boolean active;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Set<Oder> oders;
+    private Set<Order> oders;
 
     public Customer() {}
 

@@ -67,7 +67,7 @@ public class CustomerServiceIMPL implements CustomerService {
 
         for (Customer customer : customers) {
             CustomerDto dto = new CustomerDto(
-                    customer.getCustomerId(),
+                        customer.getCustomerId(),
                     customer.getCustomerName(),
                     customer.getCustomerAddress(),
                     customer.getCustomerSalary(),

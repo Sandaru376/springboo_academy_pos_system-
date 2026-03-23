@@ -1,9 +1,12 @@
 package com.springbootacademy.pos_system.service.impl;
 
+import java.util.stream.Collectors;
+import com.springbootacademy.pos_system.dto.ResponseBillDto;
+import com.springbootacademy.pos_system.dto.ResponseOrderDetailsDto;
 import com.springbootacademy.pos_system.dto.request.RequestOrderDetails;
 import com.springbootacademy.pos_system.dto.request.RequestOrderSaveDto;
 import com.springbootacademy.pos_system.entity.Item;
-import com.springbootacademy.pos_system.entity.Oder;
+import com.springbootacademy.pos_system.entity.Order;
 import com.springbootacademy.pos_system.entity.OrderDetails;
 import com.springbootacademy.pos_system.repo.CustomerRepo;
 import com.springbootacademy.pos_system.repo.ItemRepo;
@@ -36,20 +39,15 @@ public class OrderServiceIMPL implements OrderService {
     @Override
     public String addOrder(RequestOrderSaveDto requestOrderSaveDto) {
 
-        double totalAmount = 0; // ✅ initialize total
+        double totalAmount = 0;
 
-        // 1️⃣ Process Order Details first to calculate total
         List<OrderDetails> orderDetailsList = new ArrayList<>();
 
         for (RequestOrderDetails dto : requestOrderSaveDto.getOrderDetails()) {
-
             Item item = itemRepo.findById(dto.getItems())
-                    .orElseThrow(() ->
-                            new RuntimeException("Item not found with id: " + dto.getItems())
-                    );
+                    .orElseThrow(() -> new RuntimeException("Item not found with id: " + dto.getItems()));
 
             double amount = dto.getQty() * item.getSellingPrice();
-
             totalAmount += amount;
 
             OrderDetails od = new OrderDetails();
@@ -61,26 +59,45 @@ public class OrderServiceIMPL implements OrderService {
             orderDetailsList.add(od);
         }
 
-
-        // 2️⃣ Save Order with calculated total
-        Oder order = new Oder(
+        // Save Order
+        Order order = new Order(
                 customerRepo.getById(requestOrderSaveDto.getCustomer()),
                 requestOrderSaveDto.getDate(),
-                totalAmount // ✅ automatically calculated
+                totalAmount
         );
-
         orderRepo.save(order);
 
-        // 3️⃣ Link order to order details
+        // Link OrderDetails to Order
         for (OrderDetails od : orderDetailsList) {
-            od.setOders(order);
+            od.setOrder(order);
         }
 
-        // 4️⃣ Save order details
         orderDetailsRepo.saveAll(orderDetailsList);
 
         return "Order Saved Successfully with total: " + totalAmount;
     }
 
+    @Override
+    @Transactional
+    public ResponseBillDto getBill(int orderId) {
 
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
+
+        // ✅ Fixed: replaced .toList() with .collect(Collectors.toList()) for Java 11 compatibility
+        List<ResponseOrderDetailsDto> detailsDtoList = order.getOrderDetails().stream()
+                .map(od -> new ResponseOrderDetailsDto(
+                        od.getItemName(),
+                        od.getQty(),
+                        od.getAmount()
+                )).collect(Collectors.toList());
+
+        return new ResponseBillDto(
+                order.getOrderId(),
+                order.getCustomer().getCustomerName(),
+                order.getOrderDate(),
+                order.getTotal(),
+                detailsDtoList
+        );
+    }
 }

@@ -30,5 +30,19 @@ public class OrderController {
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @GetMapping("/bill/{orderId}")
+    public ResponseEntity<StandardResponse> getBill(@PathVariable int orderId) {
+
+        return new ResponseEntity<>(
+                new StandardResponse(
+                        200,
+                        "SUCCESS",
+                        orderService.getBill(orderId)
+                ),
+                HttpStatus.OK
+        );
+    }
+
 }
 
